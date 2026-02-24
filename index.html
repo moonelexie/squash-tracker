@@ -397,8 +397,10 @@
       background: var(--white);
       border-radius: 20px;
       padding: 20px;
+      padding-bottom: 48px;
       margin-bottom: 16px;
       box-shadow: var(--shadow);
+      position: relative;
       transition: all 0.3s ease;
       position: relative;
       overflow: hidden;
@@ -411,22 +413,20 @@
 
     .practice-card .delete-btn {
       position: absolute;
-      bottom: 16px;
-      right: 16px;
-      width: 32px;
-      height: 32px;
+      bottom: 12px;
+      right: 12px;
+      width: 28px;
+      height: 28px;
       background: var(--gray-100);
       border: none;
-      border-radius: 10px;
+      border-radius: 8px;
       color: var(--gray-400);
       cursor: pointer;
-      font-size: 14px;
+      font-size: 12px;
       transition: all 0.2s;
-      opacity: 0.6;
-    }
-
-    .practice-card:hover .delete-btn {
-      opacity: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .practice-card .delete-btn:hover {
