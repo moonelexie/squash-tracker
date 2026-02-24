@@ -1086,61 +1086,6 @@
       line-height: 1.6;
     }
 
-    /* Skill Progress */
-    .skill-section {
-      background: var(--white);
-      border-radius: 24px;
-      padding: 24px;
-      margin-bottom: 24px;
-      box-shadow: var(--shadow);
-    }
-
-    .skill-item {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 12px 0;
-      border-bottom: 1px solid var(--gray-100);
-    }
-
-    .skill-item:last-child {
-      border-bottom: none;
-    }
-
-    .skill-icon {
-      font-size: 24px;
-    }
-
-    .skill-info {
-      flex: 1;
-    }
-
-    .skill-name {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--dark);
-    }
-
-    .skill-bar {
-      height: 6px;
-      background: var(--gray-200);
-      border-radius: 3px;
-      margin-top: 6px;
-      overflow: hidden;
-    }
-
-    .skill-bar-fill {
-      height: 100%;
-      background: var(--gradient-1);
-      border-radius: 3px;
-      transition: width 0.5s ease;
-    }
-
-    .skill-count {
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--primary);
-    }
   </style>
 </head>
 <body>
@@ -1191,14 +1136,6 @@
         <span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span>
       </div>
       <div class="calendar-days" id="calendarDays"></div>
-    </div>
-
-    <!-- Skill Progress -->
-    <div class="skill-section">
-      <div class="section-header">
-        <h3>📊 技能统计</h3>
-      </div>
-      <div id="skillProgress"></div>
     </div>
 
     <!-- Practice List -->
@@ -1345,7 +1282,6 @@
       renderTags();
       renderCalendar();
       renderPracticeList();
-      renderSkillProgress();
       updateStats();
       updateMotivation();
       document.getElementById('practiceDate').value = new Date().toISOString().split('T')[0];
@@ -1481,36 +1417,6 @@
       renderCalendar();
     }
 
-    // Skill Progress
-    function renderSkillProgress() {
-      const skillCounts = {};
-      practices.forEach(p => {
-        (p.tags || []).forEach(tag => {
-          skillCounts[tag] = (skillCounts[tag] || 0) + 1;
-        });
-      });
-
-      const maxCount = Math.max(...Object.values(skillCounts), 1);
-      const allTags = getAllTags();
-      const topSkills = allTags
-        .map(t => ({ ...t, count: skillCounts[t.id] || 0 }))
-        .sort((a, b) => b.count - a.count)
-        .slice(0, 5);
-
-      document.getElementById('skillProgress').innerHTML = topSkills.map(skill => `
-        <div class="skill-item">
-          <div class="skill-icon">${skill.emoji}</div>
-          <div class="skill-info">
-            <div class="skill-name">${skill.name}</div>
-            <div class="skill-bar">
-              <div class="skill-bar-fill" style="width: ${(skill.count / maxCount * 100)}%"></div>
-            </div>
-          </div>
-          <div class="skill-count">${skill.count}次</div>
-        </div>
-      `).join('') || '<p style="text-align:center;color:#9CA3AF;padding:20px;">暂无数据</p>';
-    }
-
     // Practice List
     function renderPracticeList() {
       const list = document.getElementById('practiceList');
@@ -1612,7 +1518,7 @@
       
       renderCalendar();
       renderPracticeList();
-      renderSkillProgress();
+      
       updateStats();
       
       showAchievement('🗑️ 已删除', '记录已移除');
@@ -1708,7 +1614,7 @@
       closeModal();
       renderCalendar();
       renderPracticeList();
-      renderSkillProgress();
+      
       updateStats();
       
       // Check achievements
