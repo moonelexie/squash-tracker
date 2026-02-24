@@ -6,34 +6,34 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="壁球记录">
-  <meta name="theme-color" content="#6366F1">
-  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎾</text></svg>">
+  <meta name="theme-color" content="#F9A8D4">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏸</text></svg>">
   <link rel="manifest" href="manifest.json">
-  <title>🎾 壁球练习记录</title>
+  <title>🏸 运动练习记录</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary: #6366F1;
-      --primary-dark: #4F46E5;
-      --primary-light: #EEF2FF;
-      --secondary: #EC4899;
-      --accent: #F59E0B;
-      --success: #10B981;
-      --dark: #1F2937;
-      --gray-600: #4B5563;
+      --primary: #F472B6;
+      --primary-dark: #EC4899;
+      --primary-light: #FDF2F8;
+      --secondary: #FDA4AF;
+      --accent: #FCD34D;
+      --success: #86EFAC;
+      --dark: #374151;
+      --gray-600: #6B7280;
       --gray-400: #9CA3AF;
       --gray-200: #E5E7EB;
       --gray-100: #F3F4F6;
       --white: #FFFFFF;
-      --gradient-1: linear-gradient(135deg, #6366F1 0%, #8B5CF6 50%, #EC4899 100%);
-      --gradient-2: linear-gradient(135deg, #F59E0B 0%, #EC4899 100%);
-      --gradient-3: linear-gradient(135deg, #10B981 0%, #6366F1 100%);
-      --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
-      --shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
-      --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
-      --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
-      --shadow-glow: 0 0 40px rgba(99, 102, 241, 0.3);
+      --gradient-1: linear-gradient(135deg, #FBCFE8 0%, #F9A8D4 50%, #F472B6 100%);
+      --gradient-2: linear-gradient(135deg, #FED7AA 0%, #FDBA74 100%);
+      --gradient-3: linear-gradient(135deg, #A7F3D0 0%, #6EE7B7 100%);
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+      --shadow: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -1px rgba(0,0,0,0.04);
+      --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.08), 0 4px 6px -2px rgba(0,0,0,0.04);
+      --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.08), 0 10px 10px -5px rgba(0,0,0,0.03);
+      --shadow-glow: 0 0 40px rgba(244, 114, 182, 0.25);
     }
 
     * {
@@ -44,7 +44,7 @@
 
     body {
       font-family: 'Inter', -apple-system, sans-serif;
-      background: #F8FAFC;
+      background: linear-gradient(180deg, #FDF2F8 0%, #F9FAFB 100%);
       min-height: 100vh;
       color: var(--dark);
       overflow-x: hidden;
@@ -58,7 +58,7 @@
       right: -50%;
       width: 100%;
       height: 100%;
-      background: radial-gradient(circle, rgba(99, 102, 241, 0.08) 0%, transparent 50%);
+      background: radial-gradient(circle, rgba(251, 207, 232, 0.4) 0%, transparent 50%);
       pointer-events: none;
       z-index: -1;
     }
@@ -70,7 +70,7 @@
       left: -30%;
       width: 80%;
       height: 80%;
-      background: radial-gradient(circle, rgba(236, 72, 153, 0.06) 0%, transparent 50%);
+      background: radial-gradient(circle, rgba(253, 164, 175, 0.2) 0%, transparent 50%);
       pointer-events: none;
       z-index: -1;
     }
@@ -148,6 +148,31 @@
       color: var(--gray-400);
       font-size: 14px;
       font-weight: 500;
+    }
+
+    .sport-selector {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--white);
+      padding: 10px 18px;
+      border-radius: 20px;
+      margin-top: 16px;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--dark);
+      transition: all 0.2s;
+    }
+
+    .sport-selector:hover {
+      box-shadow: var(--shadow-lg);
+    }
+
+    .sport-selector .arrow {
+      font-size: 10px;
+      color: var(--gray-400);
     }
 
     /* Stats Cards */
@@ -853,6 +878,92 @@
       display: block;
     }
 
+    .sport-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 16px;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .sport-item {
+      display: flex;
+      align-items: center;
+      padding: 12px 16px;
+      background: var(--gray-100);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .sport-item:hover {
+      background: var(--primary-light);
+    }
+
+    .sport-item.active {
+      background: var(--gradient-1);
+      color: white;
+    }
+
+    .sport-item .emoji {
+      font-size: 24px;
+      margin-right: 12px;
+    }
+
+    .sport-item .name {
+      flex: 1;
+      font-weight: 600;
+    }
+
+    .sport-item .delete-sport {
+      width: 24px;
+      height: 24px;
+      background: transparent;
+      border: none;
+      color: var(--gray-400);
+      cursor: pointer;
+      border-radius: 6px;
+      opacity: 0;
+    }
+
+    .sport-item:hover .delete-sport {
+      opacity: 1;
+    }
+
+    .sport-item .delete-sport:hover {
+      background: #FEE2E2;
+      color: #EF4444;
+    }
+
+    .sport-add {
+      display: flex;
+      gap: 8px;
+    }
+
+    .sport-add input {
+      flex: 1;
+      padding: 10px 14px;
+      border: 2px solid var(--gray-200);
+      border-radius: 10px;
+      font-size: 14px;
+    }
+
+    .sport-add input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .sport-add button {
+      width: 44px;
+      background: var(--gradient-1);
+      border: none;
+      border-radius: 10px;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
     /* Duration Slider */
     .duration-display {
       text-align: center;
@@ -891,6 +1002,41 @@
       border-radius: 50%;
       cursor: pointer;
       box-shadow: var(--shadow-lg);
+    }
+
+    /* Sport Buttons */
+    .sport-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .sport-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      background: var(--gray-100);
+      border: 2px solid transparent;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .sport-btn:hover {
+      background: var(--primary-light);
+    }
+
+    .sport-btn.selected {
+      background: var(--primary-light);
+      border-color: var(--primary);
+      color: var(--primary-dark);
+    }
+
+    .sport-btn .emoji {
+      font-size: 20px;
     }
 
     /* Coach Toggle */
@@ -1093,9 +1239,13 @@
     <!-- Header -->
     <div class="header">
       <div class="header-bg"></div>
-      <div class="logo">🎾</div>
-      <h1>壁球练习记录</h1>
-      <p class="subtitle">每一次挥拍，都是进步 ✨</p>
+      <div class="logo" id="headerLogo">🏸</div>
+      <h1 id="headerTitle">运动练习记录</h1>
+      <p class="subtitle">每一次练习，都是进步 ✨</p>
+      <div class="sport-selector" onclick="openSportModal()">
+        <span id="currentSportName">全部运动</span>
+        <span class="arrow">▼</span>
+      </div>
     </div>
 
     <!-- Stats -->
@@ -1147,6 +1297,18 @@
     </div>
   </div>
 
+  <!-- Sport Selection Modal -->
+  <div class="mini-modal-overlay" id="sportOverlay" onclick="closeSportModal()"></div>
+  <div class="mini-modal" id="sportModal">
+    <h3>🏃 选择运动</h3>
+    <div class="sport-list" id="sportList"></div>
+    <div class="sport-add">
+      <input type="text" id="newSportEmoji" placeholder="🎾" maxlength="2" style="width:60px;text-align:center;">
+      <input type="text" id="newSportName" placeholder="添加新运动">
+      <button onclick="addSport()">+</button>
+    </div>
+  </div>
+
   <!-- Custom Tag Modal -->
   <div class="mini-modal-overlay" id="customTagOverlay" onclick="closeCustomTagModal()"></div>
   <div class="mini-modal" id="customTagModal">
@@ -1181,6 +1343,12 @@
       </div>
 
       <form id="practiceForm" onsubmit="savePractice(event)">
+        <!-- Sport Selection -->
+        <div class="form-group">
+          <label><span class="icon">🏃</span> 运动类型</label>
+          <div class="sport-buttons" id="sportButtons"></div>
+        </div>
+
         <!-- Coach Toggle -->
         <div class="coach-toggle" onclick="toggleCoach()">
           <div class="coach-toggle-text">
@@ -1261,16 +1429,31 @@
       "每天进步一点点 🚀",
       "今天也要好好练习！",
       "汗水不会辜负你 💦",
-      "享受每一次挥拍 🎾",
+      "享受每一次运动 🏸",
       "冠军都是练出来的 🏆",
+    ];
+
+    const DEFAULT_SPORTS = [
+      { id: 'squash', name: '壁球', emoji: '🎾' },
+      { id: 'badminton', name: '羽毛球', emoji: '🏸' },
+      { id: 'tennis', name: '网球', emoji: '🎾' },
+      { id: 'tabletennis', name: '乒乓球', emoji: '🏓' },
     ];
 
     let currentMonth = new Date();
     let practices = JSON.parse(localStorage.getItem('squashPractices') || '[]');
     let customTags = JSON.parse(localStorage.getItem('squashCustomTags') || '[]');
+    let customSports = JSON.parse(localStorage.getItem('squashCustomSports') || '[]');
     let selectedTags = [];
     let uploadedFiles = [];
     let isCoachSession = false;
+    let selectedSport = null;
+    let filterSport = null; // null = show all
+
+    // Get all sports
+    function getAllSports() {
+      return [...DEFAULT_SPORTS, ...customSports];
+    }
 
     // Get all tags (default + custom)
     function getAllTags() {
@@ -1282,9 +1465,106 @@
       renderTags();
       renderCalendar();
       renderPracticeList();
+      renderSportButtons();
       updateStats();
       updateMotivation();
+      updateHeaderSport();
       document.getElementById('practiceDate').value = new Date().toISOString().split('T')[0];
+    }
+
+    // Sport modal functions
+    function openSportModal() {
+      document.getElementById('sportOverlay').classList.add('active');
+      document.getElementById('sportModal').classList.add('active');
+      renderSportList();
+    }
+
+    function closeSportModal() {
+      document.getElementById('sportOverlay').classList.remove('active');
+      document.getElementById('sportModal').classList.remove('active');
+    }
+
+    function renderSportList() {
+      const sports = getAllSports();
+      document.getElementById('sportList').innerHTML = `
+        <div class="sport-item ${filterSport === null ? 'active' : ''}" onclick="selectFilterSport(null)">
+          <span class="emoji">🏃</span>
+          <span class="name">全部运动</span>
+        </div>
+      ` + sports.map(s => {
+        const isCustom = customSports.some(cs => cs.id === s.id);
+        return `
+          <div class="sport-item ${filterSport === s.id ? 'active' : ''}" onclick="selectFilterSport('${s.id}')">
+            <span class="emoji">${s.emoji}</span>
+            <span class="name">${s.name}</span>
+            ${isCustom ? `<button class="delete-sport" onclick="event.stopPropagation(); deleteSport('${s.id}')">×</button>` : ''}
+          </div>
+        `;
+      }).join('');
+    }
+
+    function selectFilterSport(sportId) {
+      filterSport = sportId;
+      updateHeaderSport();
+      renderCalendar();
+      renderPracticeList();
+      updateStats();
+      closeSportModal();
+    }
+
+    function updateHeaderSport() {
+      const sports = getAllSports();
+      if (filterSport) {
+        const sport = sports.find(s => s.id === filterSport);
+        if (sport) {
+          document.getElementById('currentSportName').textContent = sport.name;
+          document.getElementById('headerLogo').textContent = sport.emoji;
+        }
+      } else {
+        document.getElementById('currentSportName').textContent = '全部运动';
+        document.getElementById('headerLogo').textContent = '🏸';
+      }
+    }
+
+    function addSport() {
+      const emoji = document.getElementById('newSportEmoji').value.trim() || '🏃';
+      const name = document.getElementById('newSportName').value.trim();
+      if (!name) return;
+      
+      const id = 'sport-' + Date.now();
+      customSports.push({ id, name, emoji });
+      localStorage.setItem('squashCustomSports', JSON.stringify(customSports));
+      
+      document.getElementById('newSportEmoji').value = '';
+      document.getElementById('newSportName').value = '';
+      renderSportList();
+      renderSportButtons();
+      showAchievement('✨ 已添加', `"${name}" 运动已保存`);
+    }
+
+    function deleteSport(id) {
+      if (!confirm('确定删除这个运动类型吗？')) return;
+      customSports = customSports.filter(s => s.id !== id);
+      localStorage.setItem('squashCustomSports', JSON.stringify(customSports));
+      if (filterSport === id) filterSport = null;
+      renderSportList();
+      renderSportButtons();
+      updateHeaderSport();
+    }
+
+    function renderSportButtons() {
+      const sports = getAllSports();
+      document.getElementById('sportButtons').innerHTML = sports.map(s => `
+        <div class="sport-btn ${selectedSport === s.id ? 'selected' : ''}" onclick="selectSport('${s.id}')">
+          <span class="emoji">${s.emoji}</span>
+          <span>${s.name}</span>
+        </div>
+      `).join('');
+    }
+
+    function selectSport(id) {
+      selectedSport = selectedSport === id ? null : id;
+      renderSportButtons();
     }
 
     function updateMotivation() {
@@ -1396,7 +1676,10 @@
       
       for (let day = 1; day <= daysInMonth; day++) {
         const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-        const dayPractices = practices.filter(p => p.date === dateStr);
+        let dayPractices = practices.filter(p => p.date === dateStr);
+        if (filterSport) {
+          dayPractices = dayPractices.filter(p => p.sport === filterSport);
+        }
         const hasPractice = dayPractices.length > 0;
         const hasCoach = dayPractices.some(p => p.isCoachSession);
         const isToday = today.getFullYear() === year && today.getMonth() === month && today.getDate() === day;
@@ -1432,10 +1715,27 @@
         return;
       }
       
-      const sorted = [...practices].sort((a, b) => new Date(b.date) - new Date(a.date));
+      let filtered = [...practices];
+      if (filterSport) {
+        filtered = filtered.filter(p => p.sport === filterSport);
+      }
+      const sorted = filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
       const weekdays = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+      const allSports = getAllSports();
+      
+      if (sorted.length === 0) {
+        list.innerHTML = `
+          <div class="empty-state">
+            <div class="icon">🏸</div>
+            <h4>暂无${filterSport ? getAllSports().find(s => s.id === filterSport)?.name || '' : ''}记录</h4>
+            <p>点击下方按钮开始记录吧！</p>
+          </div>
+        `;
+        return;
+      }
       
       list.innerHTML = sorted.slice(0, 8).map(p => {
+        const sport = allSports.find(s => s.id === p.sport);
         const d = new Date(p.date);
         const allTags = getAllTags();
         const tags = (p.tags || []).map(tagId => {
@@ -1458,7 +1758,7 @@
             <div class="practice-header">
               <div class="practice-date-group">
                 <span class="practice-date">${d.getMonth() + 1}月${d.getDate()}日</span>
-                <span class="practice-weekday">${weekdays[d.getDay()]}${p.isCoachSession ? ' · 私教课' : ''}</span>
+                <span class="practice-weekday">${weekdays[d.getDay()]}${sport ? ' · ' + sport.emoji + sport.name : ''}${p.isCoachSession ? ' · 私教课' : ''}</span>
               </div>
               <span class="practice-duration">${p.duration} 分钟</span>
             </div>
@@ -1472,9 +1772,14 @@
 
     // Stats
     function updateStats() {
-      document.getElementById('totalSessions').textContent = practices.length;
+      let filtered = practices;
+      if (filterSport) {
+        filtered = practices.filter(p => p.sport === filterSport);
+      }
       
-      const totalMinutes = practices.reduce((sum, p) => sum + (p.duration || 0), 0);
+      document.getElementById('totalSessions').textContent = filtered.length;
+      
+      const totalMinutes = filtered.reduce((sum, p) => sum + (p.duration || 0), 0);
       document.getElementById('totalHours').textContent = (totalMinutes / 60).toFixed(1);
       
       // Calculate streak
@@ -1482,7 +1787,7 @@
       const today = new Date();
       today.setHours(0, 0, 0, 0);
       
-      const dates = [...new Set(practices.map(p => p.date))].sort().reverse();
+      const dates = [...new Set(filtered.map(p => p.date))].sort().reverse();
       
       for (let i = 0; i < dates.length; i++) {
         const practiceDate = new Date(dates[i]);
@@ -1540,6 +1845,7 @@
       selectedTags = [];
       uploadedFiles = [];
       isCoachSession = false;
+      selectedSport = filterSport || null; // Default to filtered sport
       document.getElementById('coachToggle').classList.remove('active');
       document.querySelectorAll('.tag-option').forEach(el => el.classList.remove('selected'));
       document.getElementById('filePreview').innerHTML = '';
@@ -1547,6 +1853,7 @@
       document.getElementById('practiceDate').value = new Date().toISOString().split('T')[0];
       document.getElementById('practiceDuration').value = 60;
       updateDuration();
+      renderSportButtons();
     }
 
     function closeModal(event) {
@@ -1601,6 +1908,7 @@
         id: Date.now(),
         date: document.getElementById('practiceDate').value,
         duration: parseInt(document.getElementById('practiceDuration').value),
+        sport: selectedSport,
         tags: selectedTags,
         notes: document.getElementById('practiceNotes').value,
         media: uploadedFiles.filter(f => f !== null),
