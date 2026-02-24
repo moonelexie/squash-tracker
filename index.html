@@ -384,6 +384,35 @@
       box-shadow: var(--shadow-lg);
     }
 
+    .practice-card .delete-btn {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 32px;
+      height: 32px;
+      background: var(--gray-100);
+      border: none;
+      border-radius: 10px;
+      color: var(--gray-400);
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.2s;
+      opacity: 0;
+    }
+
+    .practice-card:hover .delete-btn {
+      opacity: 1;
+    }
+
+    .practice-card .delete-btn:hover {
+      background: #FEE2E2;
+      color: #EF4444;
+    }
+
+    .practice-card.coach-session .delete-btn {
+      right: 50px;
+    }
+
     .practice-card.coach-session {
       border-left: 4px solid var(--secondary);
     }
@@ -704,6 +733,124 @@
     .tag-option .name {
       font-size: 12px;
       font-weight: 600;
+    }
+
+    .tag-option.add-custom {
+      border-style: dashed;
+      color: var(--gray-400);
+    }
+
+    .tag-option.add-custom:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    .tag-option.custom-tag {
+      position: relative;
+    }
+
+    .tag-option .delete-tag {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      width: 18px;
+      height: 18px;
+      background: var(--gray-200);
+      border: none;
+      border-radius: 50%;
+      font-size: 12px;
+      cursor: pointer;
+      display: none;
+      color: var(--gray-600);
+    }
+
+    .tag-option.custom-tag:hover .delete-tag {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .tag-option .delete-tag:hover {
+      background: #FEE2E2;
+      color: #EF4444;
+    }
+
+    /* Custom Tag Modal */
+    .mini-modal {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: var(--white);
+      padding: 24px;
+      border-radius: 20px;
+      box-shadow: var(--shadow-xl);
+      z-index: 2000;
+      width: 90%;
+      max-width: 320px;
+      display: none;
+    }
+
+    .mini-modal.active {
+      display: block;
+    }
+
+    .mini-modal h3 {
+      font-size: 18px;
+      margin-bottom: 16px;
+      color: var(--dark);
+    }
+
+    .mini-modal input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid var(--gray-200);
+      border-radius: 12px;
+      font-size: 16px;
+      margin-bottom: 12px;
+    }
+
+    .mini-modal input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .mini-modal-btns {
+      display: flex;
+      gap: 10px;
+    }
+
+    .mini-modal-btns button {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .mini-modal-btns .cancel-btn {
+      background: var(--gray-100);
+      color: var(--gray-600);
+    }
+
+    .mini-modal-btns .confirm-btn {
+      background: var(--gradient-1);
+      color: white;
+    }
+
+    .mini-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 1999;
+      display: none;
+    }
+
+    .mini-modal-overlay.active {
+      display: block;
     }
 
     /* Duration Slider */
@@ -1063,6 +1210,18 @@
     </div>
   </div>
 
+  <!-- Custom Tag Modal -->
+  <div class="mini-modal-overlay" id="customTagOverlay" onclick="closeCustomTagModal()"></div>
+  <div class="mini-modal" id="customTagModal">
+    <h3>➕ 添加练习项目</h3>
+    <input type="text" id="customTagEmoji" placeholder="表情符号 (如: 🎯)" maxlength="2">
+    <input type="text" id="customTagName" placeholder="项目名称 (如: 旋转球)">
+    <div class="mini-modal-btns">
+      <button class="cancel-btn" onclick="closeCustomTagModal()">取消</button>
+      <button class="confirm-btn" onclick="saveCustomTag()">添加</button>
+    </div>
+  </div>
+
   <!-- Achievement Toast -->
   <div class="achievement" id="achievement">
     <div class="achievement-icon">🏆</div>
@@ -1171,9 +1330,15 @@
 
     let currentMonth = new Date();
     let practices = JSON.parse(localStorage.getItem('squashPractices') || '[]');
+    let customTags = JSON.parse(localStorage.getItem('squashCustomTags') || '[]');
     let selectedTags = [];
     let uploadedFiles = [];
     let isCoachSession = false;
+
+    // Get all tags (default + custom)
+    function getAllTags() {
+      return [...PRACTICE_TYPES, ...customTags];
+    }
 
     // Initialize
     function init() {
@@ -1204,12 +1369,64 @@
     // Render practice type tags
     function renderTags() {
       const grid = document.getElementById('tagsGrid');
-      grid.innerHTML = PRACTICE_TYPES.map(type => `
-        <div class="tag-option" data-id="${type.id}" onclick="toggleTag('${type.id}')">
-          <span class="emoji">${type.emoji}</span>
-          <span class="name">${type.name}</span>
+      const allTags = getAllTags();
+      
+      grid.innerHTML = allTags.map(type => {
+        const isCustom = customTags.some(t => t.id === type.id);
+        return `
+          <div class="tag-option ${isCustom ? 'custom-tag' : ''} ${selectedTags.includes(type.id) ? 'selected' : ''}" data-id="${type.id}" onclick="toggleTag('${type.id}')">
+            ${isCustom ? `<button class="delete-tag" onclick="event.stopPropagation(); deleteCustomTag('${type.id}')">×</button>` : ''}
+            <span class="emoji">${type.emoji}</span>
+            <span class="name">${type.name}</span>
+          </div>
+        `;
+      }).join('') + `
+        <div class="tag-option add-custom" onclick="openCustomTagModal()">
+          <span class="emoji">➕</span>
+          <span class="name">添加项目</span>
         </div>
-      `).join('');
+      `;
+    }
+
+    // Custom tag functions
+    function openCustomTagModal() {
+      document.getElementById('customTagOverlay').classList.add('active');
+      document.getElementById('customTagModal').classList.add('active');
+      document.getElementById('customTagEmoji').value = '';
+      document.getElementById('customTagName').value = '';
+      document.getElementById('customTagEmoji').focus();
+    }
+
+    function closeCustomTagModal() {
+      document.getElementById('customTagOverlay').classList.remove('active');
+      document.getElementById('customTagModal').classList.remove('active');
+    }
+
+    function saveCustomTag() {
+      const emoji = document.getElementById('customTagEmoji').value.trim() || '🎾';
+      const name = document.getElementById('customTagName').value.trim();
+      
+      if (!name) {
+        alert('请输入项目名称');
+        return;
+      }
+      
+      const id = 'custom-' + Date.now();
+      customTags.push({ id, name, emoji });
+      localStorage.setItem('squashCustomTags', JSON.stringify(customTags));
+      
+      closeCustomTagModal();
+      renderTags();
+      showAchievement('✨ 已添加', `"${name}" 项目已保存`);
+    }
+
+    function deleteCustomTag(id) {
+      if (!confirm('确定删除这个练习项目吗？')) return;
+      
+      customTags = customTags.filter(t => t.id !== id);
+      localStorage.setItem('squashCustomTags', JSON.stringify(customTags));
+      selectedTags = selectedTags.filter(t => t !== id);
+      renderTags();
     }
 
     // Toggle tag selection
@@ -1274,7 +1491,8 @@
       });
 
       const maxCount = Math.max(...Object.values(skillCounts), 1);
-      const topSkills = PRACTICE_TYPES
+      const allTags = getAllTags();
+      const topSkills = allTags
         .map(t => ({ ...t, count: skillCounts[t.id] || 0 }))
         .sort((a, b) => b.count - a.count)
         .slice(0, 5);
@@ -1313,8 +1531,9 @@
       
       list.innerHTML = sorted.slice(0, 8).map(p => {
         const d = new Date(p.date);
+        const allTags = getAllTags();
         const tags = (p.tags || []).map(tagId => {
-          const type = PRACTICE_TYPES.find(t => t.id === tagId);
+          const type = allTags.find(t => t.id === tagId);
           return type ? `<span class="practice-tag">${type.emoji} ${type.name}</span>` : '';
         }).join('');
         
@@ -1329,6 +1548,7 @@
         
         return `
           <div class="practice-card ${p.isCoachSession ? 'coach-session' : ''}">
+            <button class="delete-btn" onclick="deletePractice(${p.id})">🗑️</button>
             <div class="practice-header">
               <div class="practice-date-group">
                 <span class="practice-date">${d.getMonth() + 1}月${d.getDate()}日</span>
@@ -1381,6 +1601,21 @@
       }
       
       document.getElementById('streak').textContent = streak;
+    }
+
+    // Delete practice
+    function deletePractice(id) {
+      if (!confirm('确定删除这条练习记录吗？')) return;
+      
+      practices = practices.filter(p => p.id !== id);
+      localStorage.setItem('squashPractices', JSON.stringify(practices));
+      
+      renderCalendar();
+      renderPracticeList();
+      renderSkillProgress();
+      updateStats();
+      
+      showAchievement('🗑️ 已删除', '记录已移除');
     }
 
     // Show achievement
