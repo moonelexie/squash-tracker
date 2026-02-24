@@ -517,23 +517,6 @@
       margin-top: 12px;
     }
 
-    .practice-media {
-      display: flex;
-      gap: 10px;
-      margin-top: 14px;
-      overflow-x: auto;
-      padding-bottom: 4px;
-    }
-
-    .practice-media img,
-    .practice-media video {
-      width: 100px;
-      height: 100px;
-      object-fit: cover;
-      border-radius: 14px;
-      flex-shrink: 0;
-    }
-
     /* Achievement Toast */
     .achievement {
       position: fixed;
@@ -1096,74 +1079,6 @@
       left: 27px;
     }
 
-    /* File Upload */
-    .file-upload {
-      border: 2px dashed var(--gray-300);
-      border-radius: 20px;
-      padding: 32px 24px;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.2s;
-      background: var(--gray-100);
-    }
-
-    .file-upload:hover {
-      border-color: var(--primary);
-      background: var(--primary-light);
-    }
-
-    .file-upload input {
-      display: none;
-    }
-
-    .file-upload .icon {
-      font-size: 40px;
-      margin-bottom: 12px;
-    }
-
-    .file-upload .text {
-      font-size: 14px;
-      color: var(--gray-600);
-      font-weight: 500;
-    }
-
-    .file-preview {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 16px;
-    }
-
-    .file-preview-item {
-      position: relative;
-      width: 90px;
-      height: 90px;
-    }
-
-    .file-preview-item img,
-    .file-preview-item video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 16px;
-    }
-
-    .file-preview-item .remove {
-      position: absolute;
-      top: -8px;
-      right: -8px;
-      width: 28px;
-      height: 28px;
-      background: var(--secondary);
-      color: white;
-      border: 3px solid white;
-      border-radius: 50%;
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: 700;
-      box-shadow: var(--shadow);
-    }
-
     /* Notes */
     .form-group textarea {
       width: 100%;
@@ -1388,17 +1303,6 @@
           <textarea id="practiceNotes" placeholder="今天的感受、进步点、需要改进的地方..."></textarea>
         </div>
 
-        <!-- Media Upload -->
-        <div class="form-group">
-          <label><span class="icon">📸</span> 照片/视频</label>
-          <div class="file-upload" onclick="document.getElementById('mediaInput').click()">
-            <div class="icon">📷</div>
-            <div class="text">点击上传照片或视频</div>
-            <input type="file" id="mediaInput" accept="image/*,video/*" multiple onchange="handleFileUpload(event)">
-          </div>
-          <div class="file-preview" id="filePreview"></div>
-        </div>
-
         <button type="submit" class="submit-btn">✨ 保存记录</button>
       </form>
     </div>
@@ -1445,7 +1349,6 @@
     let customTags = JSON.parse(localStorage.getItem('squashCustomTags') || '[]');
     let customSports = JSON.parse(localStorage.getItem('squashCustomSports') || '[]');
     let selectedTags = [];
-    let uploadedFiles = [];
     let isCoachSession = false;
     let selectedSport = null;
     let filterSport = null; // null = show all
@@ -1743,15 +1646,6 @@
           return type ? `<span class="practice-tag">${type.emoji} ${type.name}</span>` : '';
         }).join('');
         
-        const media = (p.media || []).slice(0, 4).map(m => {
-          if (m.type && m.type.startsWith('image')) {
-            return `<img src="${m.data}" alt="practice">`;
-          } else if (m.type && m.type.startsWith('video')) {
-            return `<video src="${m.data}"></video>`;
-          }
-          return '';
-        }).join('');
-        
         return `
           <div class="practice-card ${p.isCoachSession ? 'coach-session' : ''}">
             <button class="delete-btn" onclick="deletePractice(${p.id})">🗑️</button>
@@ -1762,9 +1656,8 @@
               </div>
               <span class="practice-duration">${p.duration} 分钟</span>
             </div>
-            <div class="practice-tags">${tags}</div>
+            ${tags ? `<div class="practice-tags">${tags}</div>` : ''}
             ${p.notes ? `<div class="practice-notes">${p.notes}</div>` : ''}
-            ${media ? `<div class="practice-media">${media}</div>` : ''}
           </div>
         `;
       }).join('');
@@ -1843,12 +1736,10 @@
     function openModal() {
       document.getElementById('modalOverlay').classList.add('active');
       selectedTags = [];
-      uploadedFiles = [];
       isCoachSession = false;
-      selectedSport = filterSport || null; // Default to filtered sport
+      selectedSport = filterSport || null;
       document.getElementById('coachToggle').classList.remove('active');
       document.querySelectorAll('.tag-option').forEach(el => el.classList.remove('selected'));
-      document.getElementById('filePreview').innerHTML = '';
       document.getElementById('practiceNotes').value = '';
       document.getElementById('practiceDate').value = new Date().toISOString().split('T')[0];
       document.getElementById('practiceDuration').value = 60;
@@ -1862,87 +1753,6 @@
       }
     }
 
-    // File Upload
-    const MAX_FILE_SIZE = 500 * 1024; // 500KB per file
-    const MAX_IMAGE_SIZE = 800; // max width/height
-    
-    function handleFileUpload(event) {
-      const files = Array.from(event.target.files);
-      const preview = document.getElementById('filePreview');
-      
-      files.forEach((file) => {
-        // Check file size
-        if (file.size > 5 * 1024 * 1024) {
-          alert(`文件 "${file.name}" 太大了（超过5MB），请选择小一点的文件`);
-          return;
-        }
-        
-        // For videos, just store a note (too large for localStorage)
-        if (file.type.startsWith('video')) {
-          alert('视频文件太大，暂不支持保存。建议上传照片截图 📸');
-          return;
-        }
-        
-        // For images, compress them
-        if (file.type.startsWith('image')) {
-          compressImage(file, (compressedData) => {
-            const fileIndex = uploadedFiles.length;
-            uploadedFiles.push({
-              type: file.type,
-              data: compressedData
-            });
-            
-            const item = document.createElement('div');
-            item.className = 'file-preview-item';
-            item.innerHTML = `
-              <img src="${compressedData}">
-              <button type="button" class="remove" onclick="removeFile(${fileIndex}, this)">×</button>
-            `;
-            preview.appendChild(item);
-          });
-        }
-      });
-    }
-    
-    function compressImage(file, callback) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const img = new Image();
-        img.onload = () => {
-          const canvas = document.createElement('canvas');
-          let width = img.width;
-          let height = img.height;
-          
-          // Resize if too large
-          if (width > MAX_IMAGE_SIZE || height > MAX_IMAGE_SIZE) {
-            if (width > height) {
-              height = (height / width) * MAX_IMAGE_SIZE;
-              width = MAX_IMAGE_SIZE;
-            } else {
-              width = (width / height) * MAX_IMAGE_SIZE;
-              height = MAX_IMAGE_SIZE;
-            }
-          }
-          
-          canvas.width = width;
-          canvas.height = height;
-          const ctx = canvas.getContext('2d');
-          ctx.drawImage(img, 0, 0, width, height);
-          
-          // Compress to JPEG
-          const compressedData = canvas.toDataURL('image/jpeg', 0.6);
-          callback(compressedData);
-        };
-        img.src = e.target.result;
-      };
-      reader.readAsDataURL(file);
-    }
-
-    function removeFile(index, btn) {
-      uploadedFiles[index] = null;
-      btn.parentElement.remove();
-    }
-
     // Save Practice
     function savePractice(event) {
       event.preventDefault();
@@ -1954,7 +1764,6 @@
         sport: selectedSport,
         tags: selectedTags,
         notes: document.getElementById('practiceNotes').value,
-        media: uploadedFiles.filter(f => f !== null),
         isCoachSession: isCoachSession,
         createdAt: new Date().toISOString()
       };
@@ -1965,7 +1774,7 @@
         localStorage.setItem('squashPractices', JSON.stringify(practices));
       } catch (e) {
         practices.pop(); // Remove the practice we just added
-        alert('存储空间不足！请删除一些旧记录或照片后重试');
+        alert('存储空间不足！请删除一些旧记录后重试');
         return;
       }
       
