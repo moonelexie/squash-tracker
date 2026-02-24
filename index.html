@@ -6,24 +6,34 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="壁球记录">
-  <meta name="theme-color" content="#FF6B6B">
+  <meta name="theme-color" content="#6366F1">
   <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎾</text></svg>">
   <link rel="manifest" href="manifest.json">
   <title>🎾 壁球练习记录</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary: #FF6B6B;
-      --primary-light: #FFE5E5;
-      --secondary: #4ECDC4;
-      --accent: #FFE66D;
-      --dark: #2C3E50;
-      --light: #F8F9FA;
-      --gray: #95A5A6;
+      --primary: #6366F1;
+      --primary-dark: #4F46E5;
+      --primary-light: #EEF2FF;
+      --secondary: #EC4899;
+      --accent: #F59E0B;
+      --success: #10B981;
+      --dark: #1F2937;
+      --gray-600: #4B5563;
+      --gray-400: #9CA3AF;
+      --gray-200: #E5E7EB;
+      --gray-100: #F3F4F6;
       --white: #FFFFFF;
-      --shadow: 0 4px 20px rgba(0,0,0,0.08);
-      --shadow-hover: 0 8px 30px rgba(0,0,0,0.12);
+      --gradient-1: linear-gradient(135deg, #6366F1 0%, #8B5CF6 50%, #EC4899 100%);
+      --gradient-2: linear-gradient(135deg, #F59E0B 0%, #EC4899 100%);
+      --gradient-3: linear-gradient(135deg, #10B981 0%, #6366F1 100%);
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+      --shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+      --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+      --shadow-glow: 0 0 40px rgba(99, 102, 241, 0.3);
     }
 
     * {
@@ -33,92 +43,216 @@
     }
 
     body {
-      font-family: 'Nunito', -apple-system, sans-serif;
-      background: linear-gradient(135deg, #FFF5F5 0%, #F0FFFF 100%);
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: #F8FAFC;
       min-height: 100vh;
       color: var(--dark);
+      overflow-x: hidden;
+    }
+
+    /* Background decoration */
+    body::before {
+      content: '';
+      position: fixed;
+      top: -50%;
+      right: -50%;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.08) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      bottom: -30%;
+      left: -30%;
+      width: 80%;
+      height: 80%;
+      background: radial-gradient(circle, rgba(236, 72, 153, 0.06) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: -1;
     }
 
     .container {
       max-width: 480px;
       margin: 0 auto;
-      padding: 20px;
-      padding-bottom: 100px;
+      padding: 16px;
+      padding-bottom: 120px;
     }
 
     /* Header */
     .header {
       text-align: center;
-      padding: 30px 0;
+      padding: 24px 0 32px;
+      position: relative;
+    }
+
+    .header-bg {
+      position: absolute;
+      top: -100px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 300px;
+      height: 300px;
+      background: var(--gradient-1);
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.3;
+      pointer-events: none;
+    }
+
+    .logo {
+      width: 72px;
+      height: 72px;
+      background: var(--gradient-1);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+      font-size: 36px;
+      box-shadow: var(--shadow-lg), var(--shadow-glow);
+      position: relative;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .logo::after {
+      content: '';
+      position: absolute;
+      inset: -3px;
+      background: var(--gradient-1);
+      border-radius: 22px;
+      z-index: -1;
+      opacity: 0.5;
+      filter: blur(10px);
     }
 
     .header h1 {
-      font-size: 28px;
-      font-weight: 700;
-      color: var(--dark);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-    }
-
-    .header h1 .ball {
-      width: 36px;
-      height: 36px;
-      background: var(--primary);
-      border-radius: 50%;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 18px;
-      animation: bounce 2s infinite;
-    }
-
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-5px); }
+      font-size: 26px;
+      font-weight: 800;
+      background: var(--gradient-1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 8px;
     }
 
     .header .subtitle {
-      color: var(--gray);
-      margin-top: 8px;
+      color: var(--gray-400);
       font-size: 14px;
+      font-weight: 500;
     }
 
-    /* Stats Bar */
-    .stats-bar {
-      display: flex;
+    /* Stats Cards */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
       gap: 12px;
       margin-bottom: 24px;
     }
 
     .stat-card {
-      flex: 1;
       background: var(--white);
-      border-radius: 16px;
-      padding: 16px;
+      border-radius: 20px;
+      padding: 20px 12px;
       text-align: center;
       box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
     }
 
-    .stat-card .number {
+    .stat-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-xl);
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--gradient-1);
+    }
+
+    .stat-card:nth-child(2)::before {
+      background: var(--gradient-2);
+    }
+
+    .stat-card:nth-child(3)::before {
+      background: var(--gradient-3);
+    }
+
+    .stat-icon {
       font-size: 28px;
-      font-weight: 700;
-      color: var(--primary);
+      margin-bottom: 8px;
     }
 
-    .stat-card .label {
-      font-size: 12px;
-      color: var(--gray);
-      margin-top: 4px;
+    .stat-number {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--dark);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      color: var(--gray-400);
+      margin-top: 6px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Motivation Card */
+    .motivation-card {
+      background: var(--gradient-1);
+      border-radius: 24px;
+      padding: 24px;
+      margin-bottom: 24px;
+      color: white;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow-lg), var(--shadow-glow);
+    }
+
+    .motivation-card::before {
+      content: '🏆';
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 64px;
+      opacity: 0.3;
+    }
+
+    .motivation-card h3 {
+      font-size: 14px;
+      font-weight: 600;
+      opacity: 0.9;
+      margin-bottom: 8px;
+    }
+
+    .motivation-card p {
+      font-size: 20px;
+      font-weight: 700;
+      max-width: 70%;
     }
 
     /* Calendar */
-    .calendar-section {
+    .calendar-card {
       background: var(--white);
-      border-radius: 20px;
-      padding: 20px;
+      border-radius: 24px;
+      padding: 24px;
       box-shadow: var(--shadow);
       margin-bottom: 24px;
     }
@@ -127,12 +261,13 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 16px;
+      margin-bottom: 20px;
     }
 
     .calendar-header h2 {
       font-size: 18px;
-      font-weight: 600;
+      font-weight: 700;
+      color: var(--dark);
     }
 
     .calendar-nav {
@@ -141,37 +276,40 @@
     }
 
     .calendar-nav button {
-      width: 32px;
-      height: 32px;
+      width: 36px;
+      height: 36px;
       border: none;
-      background: var(--light);
-      border-radius: 10px;
+      background: var(--gray-100);
+      border-radius: 12px;
       cursor: pointer;
-      font-size: 16px;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--gray-600);
       transition: all 0.2s;
     }
 
     .calendar-nav button:hover {
       background: var(--primary-light);
+      color: var(--primary);
     }
 
     .calendar-weekdays {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
       text-align: center;
-      margin-bottom: 8px;
+      margin-bottom: 12px;
     }
 
     .calendar-weekdays span {
       font-size: 12px;
-      color: var(--gray);
+      color: var(--gray-400);
       font-weight: 600;
     }
 
     .calendar-days {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
-      gap: 4px;
+      gap: 6px;
     }
 
     .calendar-day {
@@ -179,146 +317,238 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: 12px;
+      border-radius: 14px;
       font-size: 14px;
+      font-weight: 600;
       cursor: pointer;
       transition: all 0.2s;
       position: relative;
+      color: var(--gray-600);
     }
 
-    .calendar-day:hover {
+    .calendar-day:hover:not(.empty) {
       background: var(--primary-light);
-    }
-
-    .calendar-day.empty {
-      cursor: default;
+      color: var(--primary);
     }
 
     .calendar-day.today {
-      border: 2px solid var(--primary);
-      font-weight: 700;
+      background: var(--gray-100);
+      color: var(--dark);
     }
 
     .calendar-day.has-practice {
-      background: var(--primary);
+      background: var(--gradient-1);
       color: white;
-      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
     }
 
-    .calendar-day.has-practice::after {
-      content: '🎾';
-      position: absolute;
-      bottom: 2px;
-      font-size: 8px;
-    }
-
-    /* Add Button */
-    .add-btn {
-      position: fixed;
-      bottom: 30px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 64px;
-      height: 64px;
-      background: linear-gradient(135deg, var(--primary) 0%, #FF8E8E 100%);
-      border: none;
-      border-radius: 50%;
-      color: white;
-      font-size: 32px;
-      cursor: pointer;
-      box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
-      transition: all 0.3s;
-      z-index: 100;
-    }
-
-    .add-btn:hover {
-      transform: translateX(-50%) scale(1.1);
+    .calendar-day.has-practice.has-coach {
+      background: var(--gradient-2);
+      box-shadow: 0 4px 12px rgba(236, 72, 153, 0.4);
     }
 
     /* Practice List */
-    .practice-list {
-      margin-top: 24px;
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
     }
 
-    .practice-list h3 {
-      font-size: 16px;
-      margin-bottom: 16px;
+    .section-header h3 {
+      font-size: 18px;
+      font-weight: 700;
       color: var(--dark);
+    }
+
+    .section-header .view-all {
+      font-size: 14px;
+      color: var(--primary);
+      font-weight: 600;
+      cursor: pointer;
     }
 
     .practice-card {
       background: var(--white);
-      border-radius: 16px;
-      padding: 16px;
-      margin-bottom: 12px;
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 16px;
       box-shadow: var(--shadow);
-      cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
     }
 
     .practice-card:hover {
-      box-shadow: var(--shadow-hover);
       transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
     }
 
-    .practice-card-header {
+    .practice-card.coach-session {
+      border-left: 4px solid var(--secondary);
+    }
+
+    .practice-card.coach-session::before {
+      content: '👨‍🏫';
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      font-size: 24px;
+    }
+
+    .practice-header {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
+      align-items: flex-start;
+      margin-bottom: 14px;
+    }
+
+    .practice-date-group {
+      display: flex;
+      flex-direction: column;
     }
 
     .practice-date {
-      font-weight: 600;
+      font-size: 16px;
+      font-weight: 700;
       color: var(--dark);
     }
 
-    .practice-duration {
-      background: var(--secondary);
-      color: white;
-      padding: 4px 12px;
-      border-radius: 20px;
+    .practice-weekday {
       font-size: 12px;
-      font-weight: 600;
+      color: var(--gray-400);
+      font-weight: 500;
+    }
+
+    .practice-duration {
+      background: var(--gradient-3);
+      color: white;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 700;
     }
 
     .practice-tags {
       display: flex;
       flex-wrap: wrap;
-      gap: 6px;
+      gap: 8px;
+      margin-bottom: 12px;
     }
 
     .practice-tag {
       background: var(--primary-light);
       color: var(--primary);
-      padding: 4px 10px;
-      border-radius: 12px;
+      padding: 6px 12px;
+      border-radius: 10px;
       font-size: 12px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .practice-tag.coach-tag {
+      background: linear-gradient(135deg, #FDF2F8 0%, #FCE7F3 100%);
+      color: var(--secondary);
+    }
+
+    .practice-notes {
+      font-size: 14px;
+      color: var(--gray-600);
+      line-height: 1.5;
+      padding: 12px;
+      background: var(--gray-100);
+      border-radius: 12px;
+      margin-top: 12px;
     }
 
     .practice-media {
       display: flex;
-      gap: 8px;
-      margin-top: 12px;
+      gap: 10px;
+      margin-top: 14px;
       overflow-x: auto;
+      padding-bottom: 4px;
     }
 
     .practice-media img,
     .practice-media video {
-      width: 80px;
-      height: 80px;
+      width: 100px;
+      height: 100px;
       object-fit: cover;
-      border-radius: 12px;
+      border-radius: 14px;
+      flex-shrink: 0;
+    }
+
+    /* Achievement Toast */
+    .achievement {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-100px);
+      background: var(--white);
+      padding: 16px 24px;
+      border-radius: 16px;
+      box-shadow: var(--shadow-xl);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      z-index: 2000;
+      transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    .achievement.show {
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .achievement-icon {
+      font-size: 32px;
+    }
+
+    .achievement-text h4 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--dark);
+    }
+
+    .achievement-text p {
+      font-size: 12px;
+      color: var(--gray-400);
+    }
+
+    /* Add Button */
+    .add-btn {
+      position: fixed;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 72px;
+      height: 72px;
+      background: var(--gradient-1);
+      border: none;
+      border-radius: 24px;
+      color: white;
+      font-size: 32px;
+      cursor: pointer;
+      box-shadow: var(--shadow-xl), var(--shadow-glow);
+      transition: all 0.3s ease;
+      z-index: 100;
+    }
+
+    .add-btn:hover {
+      transform: translateX(-50%) scale(1.08);
+    }
+
+    .add-btn:active {
+      transform: translateX(-50%) scale(0.95);
     }
 
     /* Modal */
     .modal-overlay {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0,0,0,0.5);
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(8px);
       display: none;
       align-items: flex-end;
       justify-content: center;
@@ -331,86 +561,120 @@
 
     .modal {
       background: var(--white);
-      border-radius: 24px 24px 0 0;
+      border-radius: 32px 32px 0 0;
       width: 100%;
       max-width: 480px;
-      max-height: 85vh;
+      max-height: 90vh;
       overflow-y: auto;
-      padding: 24px;
-      animation: slideUp 0.3s ease;
+      padding: 28px 24px 40px;
+      animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     @keyframes slideUp {
-      from { transform: translateY(100%); }
-      to { transform: translateY(0); }
+      from { transform: translateY(100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .modal-handle {
+      width: 40px;
+      height: 4px;
+      background: var(--gray-200);
+      border-radius: 2px;
+      margin: 0 auto 20px;
     }
 
     .modal-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 24px;
+      margin-bottom: 28px;
     }
 
     .modal-header h2 {
-      font-size: 20px;
-      font-weight: 700;
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--dark);
     }
 
     .modal-close {
-      width: 36px;
-      height: 36px;
+      width: 40px;
+      height: 40px;
       border: none;
-      background: var(--light);
-      border-radius: 50%;
+      background: var(--gray-100);
+      border-radius: 14px;
       font-size: 20px;
       cursor: pointer;
+      color: var(--gray-600);
+      transition: all 0.2s;
+    }
+
+    .modal-close:hover {
+      background: var(--gray-200);
     }
 
     /* Form */
     .form-group {
-      margin-bottom: 20px;
+      margin-bottom: 24px;
     }
 
     .form-group label {
-      display: block;
+      display: flex;
+      align-items: center;
+      gap: 8px;
       font-size: 14px;
-      font-weight: 600;
-      margin-bottom: 8px;
+      font-weight: 700;
+      margin-bottom: 12px;
       color: var(--dark);
     }
 
+    .form-group label .icon {
+      font-size: 18px;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 12px;
+    }
+
+    .form-row .form-group {
+      flex: 1;
+    }
+
     .form-group input[type="date"],
-    .form-group input[type="number"] {
+    .form-group input[type="number"],
+    .form-group input[type="text"] {
       width: 100%;
-      padding: 12px 16px;
-      border: 2px solid var(--light);
-      border-radius: 12px;
+      padding: 14px 18px;
+      border: 2px solid var(--gray-200);
+      border-radius: 14px;
       font-size: 16px;
       font-family: inherit;
-      transition: border-color 0.2s;
+      font-weight: 500;
+      transition: all 0.2s;
+      background: var(--white);
     }
 
     .form-group input:focus {
       outline: none;
       border-color: var(--primary);
+      box-shadow: 0 0 0 4px var(--primary-light);
     }
 
-    /* Tags Selection */
+    /* Tags Grid */
     .tags-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 10px;
     }
 
     .tag-option {
-      padding: 12px;
-      border: 2px solid var(--light);
-      border-radius: 12px;
+      padding: 14px 8px;
+      border: 2px solid var(--gray-200);
+      border-radius: 16px;
       text-align: center;
       cursor: pointer;
       transition: all 0.2s;
-      font-size: 14px;
+      background: var(--white);
     }
 
     .tag-option:hover {
@@ -422,34 +686,132 @@
       border-color: var(--primary);
       background: var(--primary);
       color: white;
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+    }
+
+    .tag-option.coach-option.selected {
+      border-color: var(--secondary);
+      background: var(--secondary);
+      box-shadow: 0 4px 12px rgba(236, 72, 153, 0.3);
     }
 
     .tag-option .emoji {
       display: block;
-      font-size: 24px;
-      margin-bottom: 4px;
+      font-size: 28px;
+      margin-bottom: 6px;
     }
 
-    /* Duration Input */
-    .duration-input {
+    .tag-option .name {
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    /* Duration Slider */
+    .duration-display {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .duration-display .value {
+      font-size: 48px;
+      font-weight: 800;
+      background: var(--gradient-1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .duration-display .unit {
+      font-size: 18px;
+      color: var(--gray-400);
+      font-weight: 600;
+    }
+
+    .duration-slider {
+      width: 100%;
+      height: 8px;
+      -webkit-appearance: none;
+      background: var(--gray-200);
+      border-radius: 4px;
+      outline: none;
+    }
+
+    .duration-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 28px;
+      height: 28px;
+      background: var(--gradient-1);
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: var(--shadow-lg);
+    }
+
+    /* Coach Toggle */
+    .coach-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      background: linear-gradient(135deg, #FDF2F8 0%, #FCE7F3 100%);
+      border-radius: 16px;
+      margin-bottom: 20px;
+    }
+
+    .coach-toggle-text {
       display: flex;
       align-items: center;
       gap: 12px;
     }
 
-    .duration-input input {
-      width: 80px;
-      text-align: center;
+    .coach-toggle-text .emoji {
+      font-size: 28px;
+    }
+
+    .coach-toggle-text span {
+      font-weight: 700;
+      color: var(--secondary);
+    }
+
+    .toggle-switch {
+      width: 56px;
+      height: 32px;
+      background: var(--gray-300);
+      border-radius: 16px;
+      position: relative;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .toggle-switch.active {
+      background: var(--secondary);
+    }
+
+    .toggle-switch::after {
+      content: '';
+      position: absolute;
+      width: 26px;
+      height: 26px;
+      background: white;
+      border-radius: 50%;
+      top: 3px;
+      left: 3px;
+      transition: all 0.3s;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .toggle-switch.active::after {
+      left: 27px;
     }
 
     /* File Upload */
     .file-upload {
-      border: 2px dashed var(--gray);
-      border-radius: 16px;
-      padding: 24px;
+      border: 2px dashed var(--gray-300);
+      border-radius: 20px;
+      padding: 32px 24px;
       text-align: center;
       cursor: pointer;
       transition: all 0.2s;
+      background: var(--gray-100);
     }
 
     .file-upload:hover {
@@ -462,21 +824,27 @@
     }
 
     .file-upload .icon {
-      font-size: 32px;
-      margin-bottom: 8px;
+      font-size: 40px;
+      margin-bottom: 12px;
+    }
+
+    .file-upload .text {
+      font-size: 14px;
+      color: var(--gray-600);
+      font-weight: 500;
     }
 
     .file-preview {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 12px;
+      gap: 10px;
+      margin-top: 16px;
     }
 
     .file-preview-item {
       position: relative;
-      width: 80px;
-      height: 80px;
+      width: 90px;
+      height: 90px;
     }
 
     .file-preview-item img,
@@ -484,70 +852,147 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      border-radius: 12px;
+      border-radius: 16px;
     }
 
     .file-preview-item .remove {
       position: absolute;
-      top: -6px;
-      right: -6px;
-      width: 24px;
-      height: 24px;
-      background: var(--primary);
+      top: -8px;
+      right: -8px;
+      width: 28px;
+      height: 28px;
+      background: var(--secondary);
       color: white;
-      border: none;
+      border: 3px solid white;
       border-radius: 50%;
       cursor: pointer;
       font-size: 14px;
-    }
-
-    /* Submit Button */
-    .submit-btn {
-      width: 100%;
-      padding: 16px;
-      background: linear-gradient(135deg, var(--primary) 0%, #FF8E8E 100%);
-      border: none;
-      border-radius: 16px;
-      color: white;
-      font-size: 16px;
       font-weight: 700;
-      cursor: pointer;
-      transition: all 0.2s;
-      margin-top: 24px;
-    }
-
-    .submit-btn:hover {
-      transform: scale(1.02);
-      box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
-    }
-
-    /* Empty State */
-    .empty-state {
-      text-align: center;
-      padding: 40px 20px;
-      color: var(--gray);
-    }
-
-    .empty-state .icon {
-      font-size: 64px;
-      margin-bottom: 16px;
+      box-shadow: var(--shadow);
     }
 
     /* Notes */
     .form-group textarea {
       width: 100%;
-      padding: 12px 16px;
-      border: 2px solid var(--light);
-      border-radius: 12px;
+      padding: 16px 18px;
+      border: 2px solid var(--gray-200);
+      border-radius: 16px;
       font-size: 16px;
       font-family: inherit;
       resize: none;
-      height: 80px;
+      height: 100px;
+      transition: all 0.2s;
     }
 
     .form-group textarea:focus {
       outline: none;
       border-color: var(--primary);
+      box-shadow: 0 0 0 4px var(--primary-light);
+    }
+
+    /* Submit Button */
+    .submit-btn {
+      width: 100%;
+      padding: 18px;
+      background: var(--gradient-1);
+      border: none;
+      border-radius: 18px;
+      color: white;
+      font-size: 17px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-top: 28px;
+      box-shadow: var(--shadow-lg), 0 0 20px rgba(99, 102, 241, 0.3);
+    }
+
+    .submit-btn:hover {
+      transform: scale(1.02);
+    }
+
+    .submit-btn:active {
+      transform: scale(0.98);
+    }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 48px 24px;
+      color: var(--gray-400);
+    }
+
+    .empty-state .icon {
+      font-size: 72px;
+      margin-bottom: 20px;
+      filter: grayscale(0.3);
+    }
+
+    .empty-state h4 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 8px;
+    }
+
+    .empty-state p {
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* Skill Progress */
+    .skill-section {
+      background: var(--white);
+      border-radius: 24px;
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .skill-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--gray-100);
+    }
+
+    .skill-item:last-child {
+      border-bottom: none;
+    }
+
+    .skill-icon {
+      font-size: 24px;
+    }
+
+    .skill-info {
+      flex: 1;
+    }
+
+    .skill-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--dark);
+    }
+
+    .skill-bar {
+      height: 6px;
+      background: var(--gray-200);
+      border-radius: 3px;
+      margin-top: 6px;
+      overflow: hidden;
+    }
+
+    .skill-bar-fill {
+      height: 100%;
+      background: var(--gradient-1);
+      border-radius: 3px;
+      transition: width 0.5s ease;
+    }
+
+    .skill-count {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--primary);
     }
   </style>
 </head>
@@ -555,28 +1000,39 @@
   <div class="container">
     <!-- Header -->
     <div class="header">
-      <h1><span class="ball">🏸</span> 壁球练习记录</h1>
-      <p class="subtitle">记录每一次进步 ✨</p>
+      <div class="header-bg"></div>
+      <div class="logo">🎾</div>
+      <h1>壁球练习记录</h1>
+      <p class="subtitle">每一次挥拍，都是进步 ✨</p>
     </div>
 
     <!-- Stats -->
-    <div class="stats-bar">
+    <div class="stats-grid">
       <div class="stat-card">
-        <div class="number" id="totalSessions">0</div>
-        <div class="label">总练习次数</div>
+        <div class="stat-icon">🔥</div>
+        <div class="stat-number" id="totalSessions">0</div>
+        <div class="stat-label">练习次数</div>
       </div>
       <div class="stat-card">
-        <div class="number" id="totalHours">0</div>
-        <div class="label">总时长(小时)</div>
+        <div class="stat-icon">⏱️</div>
+        <div class="stat-number" id="totalHours">0</div>
+        <div class="stat-label">总时长(h)</div>
       </div>
       <div class="stat-card">
-        <div class="number" id="streak">0</div>
-        <div class="label">连续天数</div>
+        <div class="stat-icon">🎯</div>
+        <div class="stat-number" id="streak">0</div>
+        <div class="stat-label">连续天数</div>
       </div>
     </div>
 
+    <!-- Motivation -->
+    <div class="motivation-card" id="motivationCard">
+      <h3>💪 今日目标</h3>
+      <p id="motivationText">坚持就是胜利！</p>
+    </div>
+
     <!-- Calendar -->
-    <div class="calendar-section">
+    <div class="calendar-card">
       <div class="calendar-header">
         <h2 id="calendarTitle">2024年1月</h2>
         <div class="calendar-nav">
@@ -590,10 +1046,29 @@
       <div class="calendar-days" id="calendarDays"></div>
     </div>
 
+    <!-- Skill Progress -->
+    <div class="skill-section">
+      <div class="section-header">
+        <h3>📊 技能统计</h3>
+      </div>
+      <div id="skillProgress"></div>
+    </div>
+
     <!-- Practice List -->
     <div class="practice-list">
-      <h3>📋 练习记录</h3>
+      <div class="section-header">
+        <h3>📋 最近记录</h3>
+      </div>
       <div id="practiceList"></div>
+    </div>
+  </div>
+
+  <!-- Achievement Toast -->
+  <div class="achievement" id="achievement">
+    <div class="achievement-icon">🏆</div>
+    <div class="achievement-text">
+      <h4 id="achievementTitle">成就达成！</h4>
+      <p id="achievementDesc">继续加油！</p>
     </div>
   </div>
 
@@ -603,51 +1078,64 @@
   <!-- Modal -->
   <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
     <div class="modal" onclick="event.stopPropagation()">
+      <div class="modal-handle"></div>
       <div class="modal-header">
-        <h2>🎾 记录练习</h2>
+        <h2>记录练习 🎾</h2>
         <button class="modal-close" onclick="closeModal()">×</button>
       </div>
 
       <form id="practiceForm" onsubmit="savePractice(event)">
-        <!-- Date -->
-        <div class="form-group">
-          <label>📅 日期</label>
-          <input type="date" id="practiceDate" required>
+        <!-- Coach Toggle -->
+        <div class="coach-toggle" onclick="toggleCoach()">
+          <div class="coach-toggle-text">
+            <span class="emoji">👨‍🏫</span>
+            <span>私教课</span>
+          </div>
+          <div class="toggle-switch" id="coachToggle"></div>
+        </div>
+
+        <div class="form-row">
+          <!-- Date -->
+          <div class="form-group">
+            <label><span class="icon">📅</span> 日期</label>
+            <input type="date" id="practiceDate" required>
+          </div>
         </div>
 
         <!-- Duration -->
         <div class="form-group">
-          <label>⏱️ 练习时长</label>
-          <div class="duration-input">
-            <input type="number" id="practiceDuration" min="1" max="300" value="60" required>
-            <span>分钟</span>
+          <label><span class="icon">⏱️</span> 练习时长</label>
+          <div class="duration-display">
+            <span class="value" id="durationValue">60</span>
+            <span class="unit">分钟</span>
           </div>
+          <input type="range" class="duration-slider" id="practiceDuration" min="15" max="180" value="60" step="5" oninput="updateDuration()">
         </div>
 
         <!-- Practice Types -->
         <div class="form-group">
-          <label>🏃 练习内容 (可多选)</label>
+          <label><span class="icon">🏃</span> 练习内容</label>
           <div class="tags-grid" id="tagsGrid"></div>
         </div>
 
         <!-- Notes -->
         <div class="form-group">
-          <label>📝 备注</label>
-          <textarea id="practiceNotes" placeholder="今天的感受、进步、需要改进的地方..."></textarea>
+          <label><span class="icon">📝</span> 备注</label>
+          <textarea id="practiceNotes" placeholder="今天的感受、进步点、需要改进的地方..."></textarea>
         </div>
 
         <!-- Media Upload -->
         <div class="form-group">
-          <label>📸 照片/视频</label>
+          <label><span class="icon">📸</span> 照片/视频</label>
           <div class="file-upload" onclick="document.getElementById('mediaInput').click()">
             <div class="icon">📷</div>
-            <div>点击上传照片或视频</div>
+            <div class="text">点击上传照片或视频</div>
             <input type="file" id="mediaInput" accept="image/*,video/*" multiple onchange="handleFileUpload(event)">
           </div>
           <div class="file-preview" id="filePreview"></div>
         </div>
 
-        <button type="submit" class="submit-btn">✅ 保存记录</button>
+        <button type="submit" class="submit-btn">✨ 保存记录</button>
       </form>
     </div>
   </div>
@@ -661,26 +1149,56 @@
       { id: 'forehand-cross', name: '正手斜线', emoji: '↗️' },
       { id: 'backhand-cross', name: '反手斜线', emoji: '↖️' },
       { id: 'forehand-wall', name: '正手侧墙', emoji: '🧱' },
-      { id: 'backhand-wall', name: '反手侧墙', emoji: '🧱' },
+      { id: 'backhand-wall', name: '反手侧墙', emoji: '🏗️' },
       { id: 'volley', name: '截击', emoji: '⚡' },
       { id: 'drop', name: '吊球', emoji: '🪶' },
       { id: 'lob', name: '挑高球', emoji: '🌈' },
       { id: 'serve', name: '发球', emoji: '🎯' },
+      { id: 'boast', name: '侧墙球', emoji: '📐' },
       { id: 'match', name: '实战对打', emoji: '🏆' },
+      { id: 'fitness', name: '体能训练', emoji: '💪' },
+      { id: 'stretch', name: '拉伸', emoji: '🧘' },
+    ];
+
+    const MOTIVATIONS = [
+      "坚持就是胜利！加油 💪",
+      "每天进步一点点 🚀",
+      "今天也要好好练习！",
+      "汗水不会辜负你 💦",
+      "享受每一次挥拍 🎾",
+      "冠军都是练出来的 🏆",
     ];
 
     let currentMonth = new Date();
     let practices = JSON.parse(localStorage.getItem('squashPractices') || '[]');
     let selectedTags = [];
     let uploadedFiles = [];
+    let isCoachSession = false;
 
     // Initialize
     function init() {
       renderTags();
       renderCalendar();
       renderPracticeList();
+      renderSkillProgress();
       updateStats();
+      updateMotivation();
       document.getElementById('practiceDate').value = new Date().toISOString().split('T')[0];
+    }
+
+    function updateMotivation() {
+      const text = MOTIVATIONS[Math.floor(Math.random() * MOTIVATIONS.length)];
+      document.getElementById('motivationText').textContent = text;
+    }
+
+    function updateDuration() {
+      document.getElementById('durationValue').textContent = document.getElementById('practiceDuration').value;
+    }
+
+    // Toggle coach session
+    function toggleCoach() {
+      isCoachSession = !isCoachSession;
+      document.getElementById('coachToggle').classList.toggle('active', isCoachSession);
     }
 
     // Render practice type tags
@@ -689,7 +1207,7 @@
       grid.innerHTML = PRACTICE_TYPES.map(type => `
         <div class="tag-option" data-id="${type.id}" onclick="toggleTag('${type.id}')">
           <span class="emoji">${type.emoji}</span>
-          ${type.name}
+          <span class="name">${type.name}</span>
         </div>
       `).join('');
     }
@@ -719,22 +1237,23 @@
       
       let html = '';
       
-      // Empty days
       for (let i = 0; i < firstDay; i++) {
         html += '<div class="calendar-day empty"></div>';
       }
       
-      // Days
       for (let day = 1; day <= daysInMonth; day++) {
         const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-        const hasPractice = practices.some(p => p.date === dateStr);
+        const dayPractices = practices.filter(p => p.date === dateStr);
+        const hasPractice = dayPractices.length > 0;
+        const hasCoach = dayPractices.some(p => p.isCoachSession);
         const isToday = today.getFullYear() === year && today.getMonth() === month && today.getDate() === day;
         
         let classes = 'calendar-day';
         if (isToday) classes += ' today';
         if (hasPractice) classes += ' has-practice';
+        if (hasCoach) classes += ' has-coach';
         
-        html += `<div class="${classes}" onclick="showDayPractices('${dateStr}')">${day}</div>`;
+        html += `<div class="${classes}">${day}</div>`;
       }
       
       document.getElementById('calendarDays').innerHTML = html;
@@ -745,6 +1264,35 @@
       renderCalendar();
     }
 
+    // Skill Progress
+    function renderSkillProgress() {
+      const skillCounts = {};
+      practices.forEach(p => {
+        (p.tags || []).forEach(tag => {
+          skillCounts[tag] = (skillCounts[tag] || 0) + 1;
+        });
+      });
+
+      const maxCount = Math.max(...Object.values(skillCounts), 1);
+      const topSkills = PRACTICE_TYPES
+        .map(t => ({ ...t, count: skillCounts[t.id] || 0 }))
+        .sort((a, b) => b.count - a.count)
+        .slice(0, 5);
+
+      document.getElementById('skillProgress').innerHTML = topSkills.map(skill => `
+        <div class="skill-item">
+          <div class="skill-icon">${skill.emoji}</div>
+          <div class="skill-info">
+            <div class="skill-name">${skill.name}</div>
+            <div class="skill-bar">
+              <div class="skill-bar-fill" style="width: ${(skill.count / maxCount * 100)}%"></div>
+            </div>
+          </div>
+          <div class="skill-count">${skill.count}次</div>
+        </div>
+      `).join('') || '<p style="text-align:center;color:#9CA3AF;padding:20px;">暂无数据</p>';
+    }
+
     // Practice List
     function renderPracticeList() {
       const list = document.getElementById('practiceList');
@@ -753,46 +1301,47 @@
         list.innerHTML = `
           <div class="empty-state">
             <div class="icon">🎾</div>
-            <p>还没有练习记录<br>点击下方按钮开始记录吧！</p>
+            <h4>还没有练习记录</h4>
+            <p>点击下方按钮开始记录<br>你的第一次练习吧！</p>
           </div>
         `;
         return;
       }
       
       const sorted = [...practices].sort((a, b) => new Date(b.date) - new Date(a.date));
+      const weekdays = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
       
-      list.innerHTML = sorted.slice(0, 10).map(p => {
-        const tags = p.tags.map(tagId => {
+      list.innerHTML = sorted.slice(0, 8).map(p => {
+        const d = new Date(p.date);
+        const tags = (p.tags || []).map(tagId => {
           const type = PRACTICE_TYPES.find(t => t.id === tagId);
           return type ? `<span class="practice-tag">${type.emoji} ${type.name}</span>` : '';
         }).join('');
         
-        const media = (p.media || []).map(m => {
-          if (m.type.startsWith('image')) {
+        const media = (p.media || []).slice(0, 4).map(m => {
+          if (m.type && m.type.startsWith('image')) {
             return `<img src="${m.data}" alt="practice">`;
-          } else {
+          } else if (m.type && m.type.startsWith('video')) {
             return `<video src="${m.data}"></video>`;
           }
+          return '';
         }).join('');
         
         return `
-          <div class="practice-card">
-            <div class="practice-card-header">
-              <span class="practice-date">${formatDate(p.date)}</span>
+          <div class="practice-card ${p.isCoachSession ? 'coach-session' : ''}">
+            <div class="practice-header">
+              <div class="practice-date-group">
+                <span class="practice-date">${d.getMonth() + 1}月${d.getDate()}日</span>
+                <span class="practice-weekday">${weekdays[d.getDay()]}${p.isCoachSession ? ' · 私教课' : ''}</span>
+              </div>
               <span class="practice-duration">${p.duration} 分钟</span>
             </div>
             <div class="practice-tags">${tags}</div>
+            ${p.notes ? `<div class="practice-notes">${p.notes}</div>` : ''}
             ${media ? `<div class="practice-media">${media}</div>` : ''}
-            ${p.notes ? `<p style="margin-top:12px;font-size:14px;color:#666;">${p.notes}</p>` : ''}
           </div>
         `;
       }).join('');
-    }
-
-    function formatDate(dateStr) {
-      const d = new Date(dateStr);
-      const weekdays = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
-      return `${d.getMonth() + 1}月${d.getDate()}日 ${weekdays[d.getDay()]}`;
     }
 
     // Stats
@@ -818,9 +1367,14 @@
         
         if (practiceDate.getTime() === expectedDate.getTime()) {
           streak++;
-        } else if (i === 0 && practiceDate.getTime() === expectedDate.getTime() - 86400000) {
-          // Yesterday counts too
-          continue;
+        } else if (i === 0) {
+          const yesterday = new Date(today);
+          yesterday.setDate(yesterday.getDate() - 1);
+          if (practiceDate.getTime() === yesterday.getTime()) {
+            streak++;
+          } else {
+            break;
+          }
         } else {
           break;
         }
@@ -829,16 +1383,29 @@
       document.getElementById('streak').textContent = streak;
     }
 
+    // Show achievement
+    function showAchievement(title, desc) {
+      document.getElementById('achievementTitle').textContent = title;
+      document.getElementById('achievementDesc').textContent = desc;
+      document.getElementById('achievement').classList.add('show');
+      setTimeout(() => {
+        document.getElementById('achievement').classList.remove('show');
+      }, 3000);
+    }
+
     // Modal
     function openModal() {
       document.getElementById('modalOverlay').classList.add('active');
       selectedTags = [];
       uploadedFiles = [];
+      isCoachSession = false;
+      document.getElementById('coachToggle').classList.remove('active');
       document.querySelectorAll('.tag-option').forEach(el => el.classList.remove('selected'));
       document.getElementById('filePreview').innerHTML = '';
       document.getElementById('practiceNotes').value = '';
       document.getElementById('practiceDate').value = new Date().toISOString().split('T')[0];
       document.getElementById('practiceDuration').value = 60;
+      updateDuration();
     }
 
     function closeModal(event) {
@@ -852,9 +1419,10 @@
       const files = Array.from(event.target.files);
       const preview = document.getElementById('filePreview');
       
-      files.forEach(file => {
+      files.forEach((file, index) => {
         const reader = new FileReader();
         reader.onload = (e) => {
+          const fileIndex = uploadedFiles.length;
           uploadedFiles.push({
             type: file.type,
             data: e.target.result
@@ -866,7 +1434,7 @@
             ${file.type.startsWith('image') 
               ? `<img src="${e.target.result}">` 
               : `<video src="${e.target.result}"></video>`}
-            <button class="remove" onclick="removeFile(${uploadedFiles.length - 1})">×</button>
+            <button type="button" class="remove" onclick="removeFile(${fileIndex}, this)">×</button>
           `;
           preview.appendChild(item);
         };
@@ -874,15 +1442,19 @@
       });
     }
 
-    function removeFile(index) {
-      uploadedFiles.splice(index, 1);
-      const preview = document.getElementById('filePreview');
-      preview.children[index].remove();
+    function removeFile(index, btn) {
+      uploadedFiles[index] = null;
+      btn.parentElement.remove();
     }
 
     // Save Practice
     function savePractice(event) {
       event.preventDefault();
+      
+      if (selectedTags.length === 0) {
+        alert('请至少选择一个练习内容');
+        return;
+      }
       
       const practice = {
         id: Date.now(),
@@ -890,7 +1462,8 @@
         duration: parseInt(document.getElementById('practiceDuration').value),
         tags: selectedTags,
         notes: document.getElementById('practiceNotes').value,
-        media: uploadedFiles,
+        media: uploadedFiles.filter(f => f !== null),
+        isCoachSession: isCoachSession,
         createdAt: new Date().toISOString()
       };
       
@@ -900,18 +1473,18 @@
       closeModal();
       renderCalendar();
       renderPracticeList();
+      renderSkillProgress();
       updateStats();
       
-      // Celebration
-      alert('🎉 练习记录已保存！继续加油！');
-    }
-
-    // Show day practices
-    function showDayPractices(dateStr) {
-      const dayPractices = practices.filter(p => p.date === dateStr);
-      if (dayPractices.length > 0) {
-        // Scroll to practice list
-        document.querySelector('.practice-list').scrollIntoView({ behavior: 'smooth' });
+      // Check achievements
+      if (practices.length === 1) {
+        showAchievement('🎉 第一次记录！', '壁球之旅正式开始');
+      } else if (practices.length === 10) {
+        showAchievement('🔥 坚持10次！', '你已经是常客了');
+      } else if (practices.length === 50) {
+        showAchievement('🏆 50次练习！', '壁球达人养成中');
+      } else {
+        showAchievement('✅ 记录成功！', '继续保持，你很棒');
       }
     }
 
