@@ -1899,11 +1899,6 @@
     function savePractice(event) {
       event.preventDefault();
       
-      if (selectedTags.length === 0) {
-        alert('请至少选择一个练习内容');
-        return;
-      }
-      
       const practice = {
         id: Date.now(),
         date: document.getElementById('practiceDate').value,
