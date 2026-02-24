@@ -1863,31 +1863,79 @@
     }
 
     // File Upload
+    const MAX_FILE_SIZE = 500 * 1024; // 500KB per file
+    const MAX_IMAGE_SIZE = 800; // max width/height
+    
     function handleFileUpload(event) {
       const files = Array.from(event.target.files);
       const preview = document.getElementById('filePreview');
       
-      files.forEach((file, index) => {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          const fileIndex = uploadedFiles.length;
-          uploadedFiles.push({
-            type: file.type,
-            data: e.target.result
+      files.forEach((file) => {
+        // Check file size
+        if (file.size > 5 * 1024 * 1024) {
+          alert(`文件 "${file.name}" 太大了（超过5MB），请选择小一点的文件`);
+          return;
+        }
+        
+        // For videos, just store a note (too large for localStorage)
+        if (file.type.startsWith('video')) {
+          alert('视频文件太大，暂不支持保存。建议上传照片截图 📸');
+          return;
+        }
+        
+        // For images, compress them
+        if (file.type.startsWith('image')) {
+          compressImage(file, (compressedData) => {
+            const fileIndex = uploadedFiles.length;
+            uploadedFiles.push({
+              type: file.type,
+              data: compressedData
+            });
+            
+            const item = document.createElement('div');
+            item.className = 'file-preview-item';
+            item.innerHTML = `
+              <img src="${compressedData}">
+              <button type="button" class="remove" onclick="removeFile(${fileIndex}, this)">×</button>
+            `;
+            preview.appendChild(item);
           });
-          
-          const item = document.createElement('div');
-          item.className = 'file-preview-item';
-          item.innerHTML = `
-            ${file.type.startsWith('image') 
-              ? `<img src="${e.target.result}">` 
-              : `<video src="${e.target.result}"></video>`}
-            <button type="button" class="remove" onclick="removeFile(${fileIndex}, this)">×</button>
-          `;
-          preview.appendChild(item);
-        };
-        reader.readAsDataURL(file);
+        }
       });
+    }
+    
+    function compressImage(file, callback) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          let width = img.width;
+          let height = img.height;
+          
+          // Resize if too large
+          if (width > MAX_IMAGE_SIZE || height > MAX_IMAGE_SIZE) {
+            if (width > height) {
+              height = (height / width) * MAX_IMAGE_SIZE;
+              width = MAX_IMAGE_SIZE;
+            } else {
+              width = (width / height) * MAX_IMAGE_SIZE;
+              height = MAX_IMAGE_SIZE;
+            }
+          }
+          
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+          
+          // Compress to JPEG
+          const compressedData = canvas.toDataURL('image/jpeg', 0.6);
+          callback(compressedData);
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
     }
 
     function removeFile(index, btn) {
@@ -1912,7 +1960,14 @@
       };
       
       practices.push(practice);
-      localStorage.setItem('squashPractices', JSON.stringify(practices));
+      
+      try {
+        localStorage.setItem('squashPractices', JSON.stringify(practices));
+      } catch (e) {
+        practices.pop(); // Remove the practice we just added
+        alert('存储空间不足！请删除一些旧记录或照片后重试');
+        return;
+      }
       
       closeModal();
       renderCalendar();
